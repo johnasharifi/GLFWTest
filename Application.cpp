@@ -40,9 +40,28 @@ int main(void)
 
 		glBegin(GL_TRIANGLES);
 
-		glVertex2f(-0.5f, -0.5f);
-		glVertex2f(0.5f, -0.5f);
-		glVertex2f(0.0f, 0.5f);
+		const double viewSpace = 0.5;
+		const double PI = 3.1415;
+		const double delta = PI * 2 / 10;
+		// TODO image does not scale with app size right now
+		const double radius = viewSpace * 0.3;
+		const double center = 0.0;
+		const double triScale = 0.2;
+
+		for (double theta = 0.0; theta < PI * 2; theta = theta + delta) {
+			// start from points in a circle
+			double yPos = center + radius * cos(theta);
+			double xPos = center + radius * sin(theta);
+
+			// compute dimensional offsets per each triangle
+			// xOffset is a double-period function of theta
+			double xOffset = triScale * cos(theta * 2.0);
+			double yOffset = triScale * sin(theta * 2.0);
+
+			glVertex2d(xPos + yOffset, yPos - xOffset);
+			glVertex2d(xPos - yOffset, yPos + xOffset);
+			glVertex2d(xPos - yOffset, yPos + 0.0);
+		}
 
 		glEnd();
 
