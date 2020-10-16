@@ -3,6 +3,7 @@
 // #include <GLFW/glfw3.h>
 // specifying "GLFW" as part of path when we had already included immediate parent dir of glfw3.h, blocked MSVC from finding glfw3.h
 // "cannot open source file GLFW/glfw3.h"
+#include <GL/glew.h>
 #include <glfw3.h>
 
 int main(void)
