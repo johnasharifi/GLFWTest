@@ -3,6 +3,7 @@
 // #include <GLFW/glfw3.h>
 // specifying "GLFW" as part of path when we had already included immediate parent dir of glfw3.h, blocked MSVC from finding glfw3.h
 // "cannot open source file GLFW/glfw3.h"
+#include <GL/glew.h>
 #include <glfw3.h>
 
 int main(void)
@@ -31,6 +32,13 @@ int main(void)
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+
+	if (glewInit() != GLEW_OK) {
+		std::cout << "Error in initializing GLEW!" << std::endl;
+	}
+
+	std::cout << "GL version: " << glGetString(GL_VERSION) << std::endl;
+
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
