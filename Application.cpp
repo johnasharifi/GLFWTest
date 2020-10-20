@@ -132,15 +132,14 @@ int main(void)
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glBegin(GL_TRIANGLES);
+		// glBegin(GL_TRIANGLES);
 
-		glVertex2d(positions[0], positions[1]);
-		glVertex2d(positions[2], positions[3]);
-		glVertex2d(positions[4], positions[5]);
+		glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
+		// glVertex2d(positions[0], positions[1]);
+		// glVertex2d(positions[2], positions[3]);
+		// glVertex2d(positions[4], positions[5]);
 
-		// glDrawArrays(GL_TRIANGLES, 0, sizeof(float) * xyPairCount);
-
-		glEnd();
+		// glEnd();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
