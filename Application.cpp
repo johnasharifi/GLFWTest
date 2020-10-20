@@ -7,7 +7,7 @@
 #include <glfw3.h>
 
 static unsigned int CompileShader(unsigned int type, const std::string& source) {
-	unsigned int id = glCreateShader(GL_VERTEX_SHADER);
+	unsigned int id = glCreateShader(type);
 	// ensure that when we call ($string).c_str(), the value in ($string) will never have been garbage collected
 	const char* src = source.c_str();
 	// nullptr = auto-calculate length
@@ -30,10 +30,10 @@ static unsigned int CompileShader(unsigned int type, const std::string& source) 
 	return id;
 }
 
-static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
+static unsigned int CreateShader(const std::string& vertexShaderString, const std::string& fragmentShaderString) {
 	unsigned int shaderProgram = glCreateProgram();
-	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShaderString);
+	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShaderString);
 
 	glAttachShader(shaderProgram, vs);
 	glAttachShader(shaderProgram, fs);
@@ -43,6 +43,8 @@ static unsigned int CreateShader(const std::string& vertexShader, const std::str
 	// vert and frag shaders linked in shaderProgram; we can now destroy these resources
 	glDeleteShader(vs);
 	glDeleteShader(fs);
+
+	return shaderProgram;
 }
 
 int main(void)
