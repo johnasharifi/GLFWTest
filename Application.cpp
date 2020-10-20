@@ -134,7 +134,11 @@ int main(void)
 
 		glBegin(GL_TRIANGLES);
 
-		glDrawArrays(GL_TRIANGLES, 0, sizeof(float) * xyPairCount);
+		glVertex2d(positions[0], positions[1]);
+		glVertex2d(positions[2], positions[3]);
+		glVertex2d(positions[4], positions[5]);
+
+		// glDrawArrays(GL_TRIANGLES, 0, sizeof(float) * xyPairCount);
 
 		glEnd();
 
