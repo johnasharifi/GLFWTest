@@ -48,6 +48,13 @@ int main(void)
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+
+	// enable the future attrib array
+	glEnableVertexAttribArray(0);
+	// pass a vertex data collection. in our case we are passing in a collection of floats 
+	// and instructing GL to parse them as a series of float params of a collection of vertices
+	glVertexAttribPointer(0, sizeof(float) * xyCount, GL_FLOAT, GL_FALSE, xyCount * sizeof(float), 0);
+
 	glBufferData(GL_ARRAY_BUFFER, xyCount * xyPairCount * sizeof(float), &buffer, GL_STATIC_DRAW);
 
 	/* Loop until the user closes the window */
