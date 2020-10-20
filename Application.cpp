@@ -116,7 +116,7 @@ int main(void)
 	std::string fragmentShaderString =
 		"#version 330 core\n"
 		"\n"
-		"layout(location = 0) out vec4 color;\n"
+		"out vec4 color;\n"
 		"\n"
 		"void main()\n"
 		"{\n"
