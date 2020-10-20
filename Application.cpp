@@ -142,6 +142,8 @@ int main(void)
 		glfwPollEvents();
 	}
 
+	glDeleteShader(shader);
+
 	glfwTerminate();
 	return 0;
 }
