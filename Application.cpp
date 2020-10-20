@@ -84,19 +84,22 @@ int main(void)
 	const unsigned int xyCount = 2;
 	// how many 2-element vectors we have
 	const unsigned int xyPairCount = 3;
-	float positions[6] = {-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f};
+	float positions[6] = {
+		-0.5f, -0.5f, 
+		0.0f, 0.5f, 
+		0.5f, -0.5f
+	};
 
 	unsigned int buffer;
 	glGenBuffers(1, &buffer);
 	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
 
 	// enable the future attrib array
 	glEnableVertexAttribArray(0);
 	// pass a vertex data collection. in our case we are passing in a collection of floats 
 	// and instructing GL to parse them as a series of float params of a collection of vertices
-	glVertexAttribPointer(0, sizeof(float) * xyCount, GL_FLOAT, GL_FALSE, xyCount * sizeof(float), 0);
-
-	glBufferData(GL_ARRAY_BUFFER, xyCount * xyPairCount * sizeof(float), &buffer, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
 
 	// hardcoded vertex shader
 	std::string vertexShaderString =
