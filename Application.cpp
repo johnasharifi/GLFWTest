@@ -6,6 +6,45 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 
+static unsigned int CompileShader(unsigned int type, const std::string& source) {
+	unsigned int id = glCreateShader(GL_VERTEX_SHADER);
+	// ensure that when we call ($string).c_str(), the value in ($string) will never have been garbage collected
+	const char* src = source.c_str();
+	// nullptr = auto-calculate length
+	glShaderSource(id, 1, &src, nullptr);
+	glCompileShader(id);
+
+	int result;
+	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE) {
+		int length;
+		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
+		char* message = (char*)alloca(length * sizeof(char));
+		glGetShaderInfoLog(id, length, &length, message);
+
+		std::cout << "Failed to compile shader!" << message << std::endl;
+		glDeleteShader(id);
+		return 0;
+	}
+
+	return id;
+}
+
+static unsigned int CreateShader(const std::string& vertexShader, const std::string& fragmentShader) {
+	unsigned int shaderProgram = glCreateProgram();
+	unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
+	unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+
+	glAttachShader(shaderProgram, vs);
+	glAttachShader(shaderProgram, fs);
+	glLinkProgram(shaderProgram);
+	glValidateProgram(shaderProgram);
+	
+	// vert and frag shaders linked in shaderProgram; we can now destroy these resources
+	glDeleteShader(vs);
+	glDeleteShader(fs);
+}
+
 int main(void)
 {
 	std::cout << "Hello world. this is a test of C++ and GLFW" << std::endl;
