@@ -39,6 +39,16 @@ int main(void)
 
 	std::cout << "GL version: " << glGetString(GL_VERSION) << std::endl;
 
+	// how many elements in a 2-element vector? 2!
+	const unsigned int xyCount = 2;
+	// how many 2-element vectors we have
+	const unsigned int xyPairCount = 3;
+	float positions[6] = {-0.5f, -0.5f, 0.0f, 0.5f, 0.5f, -0.5f};
+
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, xyCount * xyPairCount * sizeof(float), &buffer, GL_STATIC_DRAW);
 
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
@@ -48,28 +58,7 @@ int main(void)
 
 		glBegin(GL_TRIANGLES);
 
-		const double viewSpace = 0.5;
-		const double PI = 3.1415;
-		const double delta = PI * 2 / 10;
-		// TODO image does not scale with app size right now
-		const double radius = viewSpace * 0.3;
-		const double center = 0.0;
-		const double triScale = 0.2;
-
-		for (double theta = 0.0; theta < PI * 2; theta = theta + delta) {
-			// start from points in a circle
-			double yPos = center + radius * cos(theta);
-			double xPos = center + radius * sin(theta);
-
-			// compute dimensional offsets per each triangle
-			// xOffset is a double-period function of theta
-			double xOffset = triScale * cos(theta * 2.0);
-			double yOffset = triScale * sin(theta * 2.0);
-
-			glVertex2d(xPos + yOffset, yPos - xOffset);
-			glVertex2d(xPos - yOffset, yPos + xOffset);
-			glVertex2d(xPos - yOffset, yPos + 0.0);
-		}
+		glDrawArrays(GL_TRIANGLES, 0, sizeof(float) * xyPairCount);
 
 		glEnd();
 
