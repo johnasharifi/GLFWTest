@@ -6,6 +6,11 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
 static unsigned int CompileShader(unsigned int type, const std::string& source) {
 	unsigned int id = glCreateShader(type);
 	// ensure that when we call ($string).c_str(), the value in ($string) will never have been garbage collected
@@ -45,6 +50,18 @@ static unsigned int CreateShader(const std::string& vertexShaderString, const st
 	glDeleteShader(fs);
 
 	return shaderProgram;
+}
+
+static const::std::string getStringFromFile(const::std::string& filepath) {
+	std::ifstream stream(filepath);
+	std::string line;
+	std::stringstream ss;
+
+	while (getline(stream, line)) {
+		ss << line << '\n';
+	}
+
+	return ss.str();
 }
 
 int main(void)
@@ -122,6 +139,12 @@ int main(void)
 		"{\n"
 		"	color = vec4(1.0, 0.0, 0.0, 1.0);\n"
 		"}\n";
+
+	std::string vertString = getStringFromFile("res/Shaders/BasicFragmentShader.shader");
+	std::cout << vertString << std::endl;
+	
+	std::string fragString = getStringFromFile("res/Shaders/BasicVertexShader.shader");
+	std::cout << fragString << std::endl;
 
 	unsigned int shader = CreateShader(vertexShaderString, fragmentShaderString);
 	glUseProgram(shader);
