@@ -102,9 +102,9 @@ int main(void)
 	// how many 2-element vectors we have
 	const unsigned int xyPairCount = 3;
 	float positions[6] = {
-		-0.5f, -0.5f, 
-		0.0f, 0.5f, 
-		0.5f, -0.5f
+		-1.0f, -1.0f, 
+		0.0f, 1.0f, 
+		1.0f, -1.0f
 	};
 
 	unsigned int buffer;
