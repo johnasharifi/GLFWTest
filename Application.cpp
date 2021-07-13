@@ -107,17 +107,22 @@ int main(void)
 		1.0f, -1.0f
 	};
 
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	unsigned int bufferL, bufferR;
+
+	glGenBuffers(1, &bufferL);
+	glBindBuffer(GL_ARRAY_BUFFER, bufferL);
 	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
 
-	// enable the future attrib array
-	glEnableVertexAttribArray(0);
-	// pass a vertex data collection. in our case we are passing in a collection of floats 
-	// and instructing GL to parse them as a series of float params of a collection of vertices
-	glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
+	for (int i = 0; i < 6; ++i) positions[i] *= -1;
+	// TODO multiply "positions" by -1
+	glGenBuffers(1, &bufferR);
+	glBindBuffer(GL_ARRAY_BUFFER, bufferR);
+	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
 
+	// enable the future attrib arrays
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	
 	// load vert shader from local .shader file
 	std::string vertexShaderString = getStringFromFile("res/Shaders/BasicVertexShader.shader");
 	// load frag shader from local .shader file
@@ -129,8 +134,14 @@ int main(void)
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
+		// clear
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		// pass a vertex data collection. in our case we are passing in a collection of floats 
+		// and instructing GL to parse them as a series of float params of a collection of vertices
+		glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
+		glVertexAttribPointer(1, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
+
 
 		glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
 
