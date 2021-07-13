@@ -103,23 +103,24 @@ int main(void)
 	const unsigned int xyPairCount = 3;
 
 	// set up buffer data for two {x,y} triangles
-	unsigned int bufferL, bufferR;
+	unsigned int buffers[2] = { 0,0 };
 
 	// lower left triangle buffer
-	glGenBuffers(1, &bufferL);
+	glGenBuffers(1, &buffers[0]);
 	// upper right triangle buffer
-	glGenBuffers(1, &bufferR);
+	glGenBuffers(1, &buffers[1]);
 
-	float positionsL[6] = {
-		-1.0f, -1.0f, 
-		-1.0f, 1.0f, 
-		1.0f, -1.0f
-	};
-
-	float positionsR[6] = {
-		1.0f, 1.0f,
-		1.0f, -1.0f,
-		-1.0f, 1.0f
+	float positions[2][6] = {
+		{
+			-1.0f, -1.0f,
+			-1.0f, 1.0f,
+			1.0f, -1.0f
+		},
+		{
+			1.0f, 1.0f,
+			1.0f, -1.0f,
+			-1.0f, 1.0f
+		}
 	};
 
 	// set up shader operations
@@ -137,11 +138,13 @@ int main(void)
 		// clear
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		unsigned int index = 0;
-		for (unsigned int buffer : {bufferL, bufferR}) {
+		for (int index = 0; index < 2; ++index) {
 			// use ith bufffer
+			unsigned int buffer = buffers[index];
+
 			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-			glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), index++ == 0? positionsL: positionsR, GL_STATIC_DRAW);
+			// use ith position data array
+			glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions[index], GL_STATIC_DRAW);
 
 			// enable the future attrib arrays
 			glEnableVertexAttribArray(0);
