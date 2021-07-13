@@ -103,7 +103,7 @@ int main(void)
 	const unsigned int xyPairCount = 3;
 	float positions[6] = {
 		-1.0f, -1.0f, 
-		0.0f, 1.0f, 
+		-1.0f, 1.0f, 
 		1.0f, -1.0f
 	};
 
