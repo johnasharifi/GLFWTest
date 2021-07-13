@@ -101,23 +101,29 @@ int main(void)
 	const unsigned int xyCount = 2;
 	// how many 2-element vectors we have
 	const unsigned int xyPairCount = 3;
-	float positions[6] = {
-		-1.0f, -1.0f, 
-		0.0f, 1.0f, 
-		1.0f, -1.0f
+
+	// set up buffer data for two {x,y} triangles
+	unsigned int buffers[2] = { 0,0 };
+
+	// lower left triangle buffer
+	glGenBuffers(1, &buffers[0]);
+	// upper right triangle buffer
+	glGenBuffers(1, &buffers[1]);
+
+	float positions[2][6] = {
+		{
+			-1.0f, -1.0f,
+			-1.0f, 1.0f,
+			1.0f, -1.0f
+		},
+		{
+			1.0f, 1.0f,
+			1.0f, -1.0f,
+			-1.0f, 1.0f
+		}
 	};
 
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
-
-	// enable the future attrib array
-	glEnableVertexAttribArray(0);
-	// pass a vertex data collection. in our case we are passing in a collection of floats 
-	// and instructing GL to parse them as a series of float params of a collection of vertices
-	glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
-
+	// set up shader operations
 	// load vert shader from local .shader file
 	std::string vertexShaderString = getStringFromFile("res/Shaders/BasicVertexShader.shader");
 	// load frag shader from local .shader file
@@ -129,10 +135,26 @@ int main(void)
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
-		/* Render here */
+		// clear
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
+		for (int index = 0; index < 2; ++index) {
+			// use ith bufffer
+			unsigned int buffer = buffers[index];
+
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+			// use ith position data array
+			glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions[index], GL_STATIC_DRAW);
+
+			// enable the future attrib arrays
+			glEnableVertexAttribArray(0);
+
+			// instruct GL to parse array as a series of float params of a collection of vertices
+			glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
+
+			// send a draw call for latest GL data
+			glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
+		}
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
