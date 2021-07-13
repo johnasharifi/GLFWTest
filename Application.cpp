@@ -101,28 +101,25 @@ int main(void)
 	const unsigned int xyCount = 2;
 	// how many 2-element vectors we have
 	const unsigned int xyPairCount = 3;
-	float positions[6] = {
+
+	unsigned int bufferL, bufferR;
+
+	// lower left triangle draw - buffer
+	glGenBuffers(1, &bufferL);
+	glGenBuffers(1, &bufferR);
+
+	float positionsL[6] = {
 		-1.0f, -1.0f, 
 		-1.0f, 1.0f, 
 		1.0f, -1.0f
 	};
 
-	unsigned int bufferL, bufferR;
+	float positionsR[6] = {
+	1.0f, 1.0f,
+	1.0f, -1.0f,
+	-1.0f, 1.0f
+	};
 
-	glGenBuffers(1, &bufferL);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferL);
-	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
-
-	for (int i = 0; i < 6; ++i) positions[i] *= -1;
-	// TODO multiply "positions" by -1
-	glGenBuffers(1, &bufferR);
-	glBindBuffer(GL_ARRAY_BUFFER, bufferR);
-	glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positions, GL_STATIC_DRAW);
-
-	// enable the future attrib arrays
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	
 	// load vert shader from local .shader file
 	std::string vertexShaderString = getStringFromFile("res/Shaders/BasicVertexShader.shader");
 	// load frag shader from local .shader file
@@ -137,12 +134,29 @@ int main(void)
 		// clear
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// pass a vertex data collection. in our case we are passing in a collection of floats 
-		// and instructing GL to parse them as a series of float params of a collection of vertices
+		glBindBuffer(GL_ARRAY_BUFFER, bufferL);
+		glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positionsL, GL_STATIC_DRAW);
+
+		// enable the future attrib arrays
+		glEnableVertexAttribArray(0);
+
+		// instruct GL to parse array as a series of float params of a collection of vertices
 		glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
-		glVertexAttribPointer(1, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
 
+		// send a draw call for latest GL data
+		glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
 
+		// upper right triangle draw - buffer
+		glBindBuffer(GL_ARRAY_BUFFER, bufferR);
+		glBufferData(GL_ARRAY_BUFFER, xyPairCount * xyCount * sizeof(float), positionsR, GL_STATIC_DRAW);
+
+		// enable the future attrib arrays
+		glEnableVertexAttribArray(1);
+
+		// instruct GL to parse array as a series of float params of a collection of vertices
+		glVertexAttribPointer(0, xyCount, GL_FLOAT, GL_FALSE, sizeof(float) * xyCount, 0);
+
+		// send a draw call for latest GL data
 		glDrawArrays(GL_TRIANGLES, 0, xyPairCount);
 
 		/* Swap front and back buffers */
