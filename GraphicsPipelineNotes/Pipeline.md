@@ -18,6 +18,13 @@ https://www.khronos.org/opengl/wiki/Rendering_Pipeline_Overview#Rasterization
 
 Given vertices, convert to fragments. Fragments which are intermediate between two vertices may be interpolated.
 
+
+# Culling
+
+https://learnopengl.com/Advanced-OpenGL/Face-culling
+
+After vertices are computed in NDC, triangle windings can be computed. A series of triangle vertices which form a counter-clockwise winding, can be interpreted as pointing toward the GL camera. We could choose to preserve only counter-clockwise triangles. Counter-clockwise triangles would be culled.
+
 # Shading
 
 A fragment shader defines shading which is applied on a per-pixel basis.
@@ -43,5 +50,3 @@ ZTest / depth buffer precision can be modified by
 - storing inverse of depth, rather than depth
 - moving near plane as far away as possible. Values which are close to the near plane but on the positive side, will have better float precision
 - using more bits in depth buffer
-
-# Culling
