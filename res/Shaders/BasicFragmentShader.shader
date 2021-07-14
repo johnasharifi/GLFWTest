@@ -24,7 +24,16 @@ float iSphere4(in vec3 rOrigin, in float radiusScreen) {
 
 void main()
 {
-	float dist = iSphere4(vec3(texCoordUV.xy - 0.5, 0.0), 0.5);
+	const float uvThreshold = 0.3;
 
-	color = vec4(mod(dist, 1.0), 0.0, 0.0, 1.0);
+	if (length(texCoordUV.xy - 0.5) > uvThreshold) {
+		// regular red-green-yellow UV painting
+		color = vec4(texCoordUV.xy, 0.0, 1.0);
+	}
+	else {
+		float dist = iSphere4(vec3(texCoordUV.xy - 0.5, 0.0), 0.5);
+
+		// draw a really bad sphere
+		color = vec4(mod(dist, 1.0), 0.0, 0.0, 1.0);
+	}
 }

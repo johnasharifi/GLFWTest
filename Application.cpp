@@ -111,16 +111,8 @@ int main(void)
 	glGenBuffers(1, &buffers[1]);
 
 	float positions[2][6] = {
-		{
-			-1.0f, -1.0f,
-			-1.0f, 1.0f,
-			1.0f, -1.0f
-		},
-		{
-			1.0f, 1.0f,
-			1.0f, -1.0f,
-			-1.0f, 1.0f
-		}
+		{ -1.0f, -1.0f, -1.0f, +1.0f, +1.0f, -1.0f }, 
+		{ +1.0f, +1.0f, -1.0f, +1.0f, +1.0f, -1.0f }
 	};
 
 	// set up shader operations
