@@ -1,6 +1,6 @@
 # Overview
 
-Discuss vertices, rasterization, shading.
+Discuss vertices, rasterization, shading, light render paths.
 
 # Vertices
 
@@ -50,3 +50,21 @@ ZTest / depth buffer precision can be modified by
 - storing inverse of depth, rather than depth
 - moving near plane as far away as possible. Values which are close to the near plane but on the positive side, will have better float precision
 - using more bits in depth buffer
+
+# Light render paths - Forward vs Deferred
+
+https://docs.unity3d.com/Manual/RenderingPaths.html
+
+Forward
+- Mechanism: render each triangle, back to front. Disadvantage: sometimes overdraw
+- Real-time shadows: yes, but some constraints
+- Depth and normal buffers: opt into calculating, with cost
+- cost of a per-pixel light: number_of_pixels * number_of_objects
+- platform constraints: any
+
+Deferred
+- Mechanism: calculate a screen buffer's worth of {pixel albedo, normal, z position} in [n x m] pixels. After we calculate per pixel, which material we are sourcing from, finish drawing each pixel with their particular shaders and buffers. Disadvantage: takes up a lot of space
+- Real-time shadows: yes
+- Depth and normal buffers: automatic
+- cost of a per-pixel light: number_of_pixels
+- platform constraints: ShaderModel 3.0, OpenGL ES 3.0
