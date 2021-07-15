@@ -54,16 +54,17 @@ ZTest / depth buffer precision can be modified by
 # Light render paths - Forward vs Deferred
 
 https://docs.unity3d.com/Manual/RenderingPaths.html
+https://www.reddit.com/r/explainlikeimfive/comments/8tls3f/eli5_whats_the_difference_between_forward/e18j2dp/
 
 Forward
-- Mechanism: render each triangle, back to front. Disadvantage: sometimes overdraw
+- Mechanism: render each pixel in each triangle. For each pixel, lighting is fully calculated. Disadvantage: sometimes completely finish drawing a pixel, then we have to overdraw
 - Real-time shadows: yes, but some constraints
 - Depth and normal buffers: opt into calculating, with cost
 - cost of a per-pixel light: number_of_pixels * number_of_objects
 - platform constraints: any
 
 Deferred
-- Mechanism: calculate a screen buffer's worth of {pixel albedo, normal, z position} in [n x m] pixels. After we calculate per pixel, which material we are sourcing from, finish drawing each pixel with their particular shaders and buffers. Disadvantage: takes up a lot of space
+- Mechanism: calculate a screen buffer's worth of {pixel albedo, normal, z position} in [n x m] pixels. After we calculate per pixel, which material we are sourcing from, finish drawing each pixel with their particular shaders and buffers. Then apply lighting. Disadvantage: takes up a lot of space
 - Real-time shadows: yes
 - Depth and normal buffers: automatic
 - cost of a per-pixel light: number_of_pixels
