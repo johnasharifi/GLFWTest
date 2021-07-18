@@ -103,9 +103,11 @@ Intersect trace(Ray ray) {
 vec3 radiance(Ray ray) {
 	vec3 color = vec3(0.0), fresnel = vec3(0.0);
 	vec3 mask = vec3(1.0);
+	// for n ray-trace steps:
 	for (int i = 0; i <= iterations; ++i) {
 		Intersect hit = trace(ray);
 
+		// if hit
 		if (hit.material.diffuse > 0.0 || hit.material.specular > 0.0) {
 			vec3 r0 = hit.material.color.rgb * hit.material.specular;
 			float hv = clamp(dot(hit.normal, -ray.direction), 0.0, 1.0);
@@ -119,6 +121,7 @@ vec3 radiance(Ray ray) {
 			}
 
 			vec3 reflection = reflect(ray.direction, hit.normal);
+			// advance the ray along the ray's path and then re-run raytracing
 			ray = Ray(ray.origin + hit.len * ray.direction + epsilon * reflection, reflection);
 
 		}
