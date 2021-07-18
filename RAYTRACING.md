@@ -2,7 +2,7 @@ Add notes on the shader that we sourced from user "Polytonic" on Shadertoy https
 
 # Demo image
 
-![Result of ray-tracing in a scene with a few spheres.](https://github.com/johnasharifi/GLFWTest/blob/feature_glsl_raytracing/DemoImages/rayTracing_spheres.PNG)
+![Result of ray-tracing in a scene with a few spheres.](/DemoImages/rayTracing_spheres.PNG)
 
 This image shows ray-tracing in action in a scene with a few spheres.
 This ray-tracing implementation supports light bounces off of one object in a single direction, based on a sphere's normal.
