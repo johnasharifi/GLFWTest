@@ -40,3 +40,26 @@ This file documents the general behavior of ray-tracing in pure GLSL as implemen
 		return color;
 	}
   
+  # The process for computing the result of a single ray-trace
+  
+  	// this process recruits mathematical properties of spheres and planes to compute ray TRACING results with faster processes than ray MARCHING.
+	Intersect trace(Ray ray) {
+		const int num_spheres = 3;
+		Sphere spheres[num_spheres];
+
+		// no iTime in this GL framework. TODO later support passing in iTime for parity with shadertoy
+		const float iTime = 0.0;
+		spheres[0] = Sphere(2.0, vec3(-4.0, 3.0 + sin(iTime), 0), Material(vec3(1.0, 0.0, 0.2), 1.0, 0.001));
+		spheres[1] = Sphere(3.0, vec3(4.0 + cos(iTime), 3.0, 0), Material(vec3(0.0, 0.2, 1.0), 1.0, 0.0));
+		spheres[2] = Sphere(1.0, vec3(0.5, 1.0, 6.0), Material(vec3(1.0, 1.0, 1.0), 0.5, 0.25));
+
+		Intersect intersection = miss;
+		Intersect plane = intersect(ray, Plane(vec3(0, 1, 0), Material(vec3(1.0, 1.0, 1.0), 1.0, 0.0)));
+		if (plane.material.diffuse > 0.0 || plane.material.specular > 0.0) { intersection = plane; }
+		for (int i = 0; i < num_spheres; i++) {
+			Intersect sphere = intersect(ray, spheres[i]);
+			if (sphere.material.diffuse > 0.0 || sphere.material.specular > 0.0)
+				intersection = sphere;
+		}
+		return intersection;
+	}
