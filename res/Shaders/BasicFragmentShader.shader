@@ -1,5 +1,7 @@
 #version 330 core
 
+// credit to source - https://www.shadertoy.com/view/4ljGRd user "Polytonic" on Shadertoy
+
 // interpolated in frag shader
 in vec2 texCoordUV;
 
