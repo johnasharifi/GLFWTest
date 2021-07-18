@@ -71,3 +71,18 @@ This file documents the general behavior of ray-tracing in pure GLSL as implemen
 		}
 		return intersection;
 	}
+
+# Accelerating ray-tracing queries with a Bounding Volume Hierarchy	
+
+https://gpuopen.com/learn/radeon-prorender-2-0/
+
+Instead of checking whether a ray intersects with any object in the scene, we wish to check if an object intersects with a (possibly progressively smaller) subset of objects.
+
+We can store our data in a bounding volume hierarchy (BVH) and traverse the BVH, cutting down our subobject pool as we go, until we only have to check for intersections with a small subset of objects.
+
+In application, a BVH will be comprised of a 
+- test
+- sub-BVHs
+- vertices
+ 
+The test determines whether to traverse this BVH, or possibly which sub-BVH(s) to traverse. As the BVH is traversed, the traversal will accumulate contained vertices.
