@@ -128,24 +128,11 @@ vec3 radiance(Ray ray) {
 	return color;
 }
 
-	f = f + (f > 0? 1.0: 0.0) * pow(f - specThreshold, 2.0);
-	f = clamp(f, 0.0, 1.0);
-
-	return f;
-}
-
 void main()
 {
-	const float uvThreshold = 0.3;
-
-	if (length(texCoordUV.xy - 0.5) > uvThreshold) {
-		// regular red-green-yellow UV painting
-		color = vec4(texCoordUV.xy, 0.0, 1.0);
-	}
-	else {
-		float dist = iSphere4(vec3(texCoordUV.xy - 0.5, 0.0), 0.5);
-
-		// draw a really bad sphere
-		color = vec4(mod(dist, 1.0), 0.0, 0.0, 1.0);
-	}
+	vec2 uv = texCoordUV.xy - vec2(0.5);
+	// TODO support iResolution.xy
+	// uv.x *= iResolution.x / iResolution.y;
+	Ray ray = Ray(vec3(0.0, 2.5, 12.0), normalize(vec3(uv.x, uv.y, -1.0)));
+	color = vec4(pow(radiance(ray) * exposure, vec3(1.0 / gamma)), 1.0);
 }
