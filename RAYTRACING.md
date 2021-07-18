@@ -1,5 +1,13 @@
 Add notes on the shader that we sourced from user "Polytonic" on Shadertoy https://www.shadertoy.com/view/4ljGRd.
 
+# Demo image
+
+![Result of ray-tracing in a scene with a few spheres.](https://github.com/johnasharifi/GLFWTest/blob/feature_glsl_raytracing/DemoImages/rayTracing_spheres.PNG)
+
+This image shows ray-tracing in action in a scene with a few spheres.
+This ray-tracing implementation supports light bounces off of one object in a single direction, based on a sphere's normal.
+This ray-tracing implementation supports shadow detection.
+
 # Overview
 
 This file documents the general behavior of ray-tracing in pure GLSL as implemented in BasicFragmentShader.shader.
