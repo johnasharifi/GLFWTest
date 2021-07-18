@@ -5,6 +5,40 @@ in vec2 texCoordUV;
 
 out vec4 color;
 
+// structs
+
+struct Ray {
+	vec3 origin;
+	vec3 direction;
+};
+
+struct Light {
+	vec3 color;
+	vec3 direction;
+};
+
+struct Material {
+	vec3 color;
+	float diffuse;
+	float specular;
+};
+
+struct Intersect {
+	float len;
+	vec3 normal;
+	Material material;
+};
+
+struct Sphere {
+	float radius;
+	vec3 position;
+	Material material;
+};
+
+struct Plane {
+	vec3 normal;
+	Material material;
+};
 // write a sphere intersection process
 float iSphere4(in vec3 rOrigin, in float radiusScreen) {
 	// don't even do light position yet, just direction
