@@ -35,7 +35,11 @@ Hierarchy of concurrent threads:
 
 Each thread may have its own register, but pull data from a shared "parallel data cache".
 
-DRAM is dynamic random access mmeory. Accessing 1 byte of DRAM (at random location) is same cost as accessing 128 consecutive bytes.
+Most GPUs will have GDDR6_SDRAM or similar. This RAM is optimized for high throughput. "Shared memory" is accessible by all threads in a thread group.
+
+An AMD GCN CU can have n SIMDs (n = 4 in 2017 according to link). Each SIMD can have up to 10 concurrent waves. Each wave can contain 64 threads.
+
+In CUDA, groups of threads with consecutive thread indexes are bundled into warps; one full warp is executed on a single CUDA core. At runtime, a thread block is divided into a number of warps for execution on the cores of an SM.
 
 # Waves
 
